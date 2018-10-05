@@ -1,0 +1,59 @@
+### plot_D_over_p_vary_aop_constU.sh 0 ewaldCorr/steric 10 0.5 1 2 ####
+set autoscale; unset log; unset label; set ytic auto; set xtic auto; set key default
+set key top right horiz width -6
+set ylabel "$D/D_0$" offset 1.5
+set xlabel "$XLABEL TODO$"
+set xrange [-21:21]
+set yrange [-0.01:1.3]
+
+
+# TICS
+set mxtics             # activate minor xtics
+set mytics             # activate minor ytics
+set xtics scale 1.1, 0.6 
+set ytics scale 1.1, 0.6
+
+
+set border linewidth 1.5
+
+set style data linespoints
+set pointintervalbox 1
+
+#do for [i=1:n] {
+#    set style line i linewidth 3
+#}
+set style line 1 lw 1 pi -1 ps 1.5
+set tmargin at screen 0.99
+set terminal epslatex color solid size 5.3, 2.8 font " " 12 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+
+set xlabel "p/b"
+set xrange [0:1]
+
+# FTTING
+f1(x)=exp( - a1 * x ** n1 )
+a1 = 5.559; n1 = 0.6;            # initial guess for a1 and b1
+f2(x)=exp( - a2 * x ** n2 ); a2 = 6; n2 = 0.6;
+f3(x)=exp( - a3 * x ** n3 ); a3 = 6; n3 = 0.6; 
+set fit errorvariables
+fit f1(x) "tmp/plotdata_3.txt" u 1:($2/6):($3/6) via a1,n1
+fit f2(x) "tmp/plotdata_4.txt" u 1:($2/6):($3/6) via a2,n2
+fit f3(x) "tmp/plotdata_5.txt" u 1:($2/6):($3/6) via a3,n3
+set print "tmp/fitparameters.txt"
+print "a1 ", a1, a1_err
+print "n1 ", n1, n1_err
+print "a2 ", a2, a2_err
+print "n2 ", n2, n2_err
+print "a3 ", a3, a3_err
+print "n3 ", n3, n3_err
+
+plot \
+"tmp/plotdata_3.txt" u 1:($2/6):($3/6) w points ls 1 pt 5 lc rgb '#FF0000' ti "$a/p = 0.5 \\, b$", \
+"tmp/plotdata_4.txt" u 1:($2/6):($3/6) w points ls 1 pt 5 lc rgb '#0000FF' ti "$a/p = 1 \\, b$", \
+"tmp/plotdata_5.txt" u 1:($2/6):($3/6) w points ls 1 pt 5 lc rgb '#32CD32' ti "$a/p = 2 \\, b$", \
+f1(x) lc rgb '#FF0000' notitle, f2(x) lc rgb '#0000FF' notitle,  f3(x) lc rgb '#32CD32' notitle 
+ 
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_p_at_u0_ewaldCorrsteric_aOverp_0.5_1_2_FIT.tex"
+replot
+set term aqua
+replot

@@ -1,0 +1,15 @@
+#function definitions for fit
+f(x) = m*x + c
+
+# input argument
+if (!exists("tstart")) tstart=500
+
+#fitting
+set fit errorvariables
+fit [tstart:] f(x) 'msd.txt' u 1:2     via m, c
+set print "linear_fit_parametersMSD.txt"
+print "m ", m, m_err
+print "c ", c, c_err
+#print "R^2",  
+set print
+

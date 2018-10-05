@@ -1,0 +1,13 @@
+#function definitions for fit
+f(x) = m*(x+0.0005) + c
+
+
+#fitting
+set fit errorvariables
+fit [0.0005:0.01] f(x) 'squaredisp.dat' u 1:2     via m, c
+set print "Ds_linear_fit_parameters.txt"
+print "m ", m, m_err
+print "c ", c, c_err
+#print "R^2",  
+set print
+

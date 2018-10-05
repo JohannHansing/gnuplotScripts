@@ -1,0 +1,51 @@
+##### ranPot potential modification at opposite charge intersections #####
+set autoscale; unset log; unset label; set ytic auto; set xtic auto; unset key
+set ylabel '$U_\text{ran}(z)$'  offset graph 0.09,0
+set xlabel '$z$' offset graph 0.52,0.48
+set xrange [-1.2:2.2]
+set yrange [-1.4:1.7]
+
+
+# TICS
+unset tics
+#set mxtics              # activate minor xtics
+set xtics scale 1.2, 0.2 format " "
+set ytics scale 1.2, 0.6 format " "
+set ytics nomirror ('0' 0, '$U_I(\rho)$' 1, '$-U_I(\rho)$' -1)
+set xtics ('$-b$' -1,  '0' 0,  '$b$' 1, '$2b$' 2)
+#set xtics add ('$i-1$' -0.5 1 , '$i$' 0.5 1, '$i+1$' 1.5 1)
+
+unset border
+set xzeroaxis
+set xtics axis
+
+set style data linespoints
+set pointintervalbox 1
+
+# draw vertical lines
+set arrow from -1.2, 0 to 0,0 nohead lw 6 lc rgb '#87CEFA' #size screen 0.03,16,60 filled lw 1.5
+set arrow from 1, 0 to 2.1,0 nohead lw 6 lc rgb '#87CEFA' #size screen 0.03,16,60 filled lw 1.5
+set arrow from 0,0 to 1,0 nohead lw 6 lc rgb '#FFD700' #size screen 0.03,16,60 filled lw 1.5
+# make x axis an arrow
+set arrow from -1.2, 0 to 2.2, 0 size screen 0.02,16,60 filled lw 1.5
+# make y axis an arrow
+set arrow from graph 0,0 to graph 0,1 size screen 0.02,16,60 filled lw 1.5
+
+####### function
+f(x) = x <= -0.25 ? -1 \
+     : x <= 0.25  ? 4*x \
+     : x <= 0.75  ? 1 \
+     : x <= 1.25  ? 4 * (1 - x) \
+     : -1 
+
+set style line 1 lw 2 lc rgb '000000'
+set tmargin at screen 0.98
+set terminal epslatex color size 5, 2 font " " 14 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+#set key top horizontal width -7
+
+plot f(x) lw 2
+
+ 
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/U_ranPot_mod.tex"
+replot

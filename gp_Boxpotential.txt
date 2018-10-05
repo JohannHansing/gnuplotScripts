@@ -1,0 +1,136 @@
+###### Electrostatic boxpotential at point (x,y,z) for range k and potstrength u0 in gnuplot format   ########
+### include into gnuplot via: load "gp_Boxpotential.txt"
+load "/Users/jh/Documents/workspace-cpp/gnuplot/gp_defaultPlot.txt"
+
+
+
+# Helper function
+u(ri,rj,k,n,m)= exp(- sqrt( (ri - n)**2 + (rj - m)**2 ) / k)
+
+# Electrostatic potential calculated for rods up to order N = 1,2,3 ...
+U(x,y,z,k,u0,N)= u0 * sum[n=(1-N):N] ( sum[m=(1-N):N] ( u(x,y,k,n,m) + u(y,z,k,n,m) + u(z,x,k,n,m) ))
+
+
+N=2
+diff(k,u0)=U(0,0.5,0.5,k,u0,N) - U(0.5,0.5,0.5,k,u0,N)
+
+diff2(k,u0)=U(0,0,0.5,k,u0,N) - U(0,0,0,k,u0,N)
+
+
+### First plot - potential difference between side and center of box ###
+
+set terminal epslatex color solid size 5.1, 2.5 font " " 12 lw 1.5
+
+set autoscale
+set ylabel '$\Delta U^\mathrm{i}_\mathrm{cs} / \kT$'
+set xlabel '$k/b$'
+set key top left vertical width +0.5
+set xrange [0.001:0.5]
+u_arr = "1 5 10 20"
+plot for [u in u_arr] diff(x,u) lw 2 ti '$U_0/\kT = '.u.'$'
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/DeltaU_center-side_thesis.tex"
+replot
+print "DeltaU_center-side_thesis.tex"
+
+
+### Second plot - potential difference between side and center of box ###
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/DeltaU_corner-edge_thesis.tex"
+set ylabel '$\Delta U^\mathrm{i}_\mathrm{ec} / \kT$
+set key top right vertical width +0.5
+set yrange [0:21]
+u_arr = "-1 -5 -10"
+
+plot for [u in u_arr] diff2(x,u) lw 2 ti '$U_0/\kT = '.u.'$'
+print "DeltaU_corner-edge_thesis.tex"
+
+
+
+### Third plot - potential along edge of box ###
+
+set terminal epslatex color solid size 2.8, 2.1 font " " 12 lw 1.5
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/U_along_edge_k0.5_1_2.tex"
+set ylabel '$U^\mathrm{i}(x,0,0)\, /\, U_0$' offset 2.2
+set xlabel '$x/b$'
+set key top horizontal 
+set yrange [0.6:3.75]
+set xrange [0:1]
+k_arr = "0.05 0.1 0.2"
+
+plot for [k in k_arr] U(x,0,0,k,1,2) lw 2 ti "$k = ".k."\\,b$"
+print "U_along_edge_k0.5_1_2.tex"
+
+
+### Fourth plot - potential along middle of box ###
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/U_along_middle_k0.5_1_2.tex"
+set ylabel '$U^\mathrm{i}(x,0.5\,b,0.5\,b)\: /\: U_0$' offset 2.2
+set xlabel '$x/b$'
+set key top horizontal 
+set yrange [-0.03:0.8]
+set xrange [0:1]
+
+plot for [k in k_arr] U(x,0.5,0.5,k,1,2) lw 2 ti "$k = ".k."\\,b$"
+print "U_along_middle_k0.5_1_2.tex"
+
+
+
+
+#########################################################
+### Effective potential vs. Edge and Middle #############
+#########################################################
+
+set terminal epslatex color solid size 2.8, 2.1 font " " 12 lw 1.5
+set style data points
+set ylabel '$U\;/\;\kT$' offset 2   #'$U^\mathrm{i}\;/\;\kT$' offset 2
+set xlabel '$x/b$'
+
+k_arr = "0.05 0.1 0.2"
+# Set colors for lines
+colors = "#FF0000 #0000FF #32CD32 #FF0000 #0000FF #32CD32"
+set for [i=1:6] linetype i lc rgb word(colors, i)
+
+
+##########
+#ATTRACTIVE:
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Ueff_edge_u-3.tex"
+set key bottom vertical 
+set yrange [-10:-2.50]
+set xrange [0:1]
+
+
+plot for [k in k_arr] U(x,0,0,k,-3,2) lw 2 ti "$k = ".k."\\,b$", \
+for [k in k_arr] '/Users/jh/Documents/reports-talk-etc/reports/paper/epj/UeffData/k_'.k.'.txt' u 1:($2-3) ps 0.4 pt 7 notitle
+
+#'/Users/jh/Documents/mathematica/Boxpotential_data/U_eff/ueffk0.2u-'.U_0.'.dat' pt 0 ti '$U_\mathrm{eff}$'
+
+print "Ueff_edge_u-3.tex"
+
+
+##########
+#REPULSIVE:
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Ueff_middle_u3.tex"
+set key top horizontal 
+set yrange [-0.1:3.2]
+set xrange [0:1]
+
+plot for [k in k_arr] U(x,0.5,0.5,k,3,2) lw 2	 ti "$k = ".k."\\,b$", \
+for [k in k_arr] '/Users/jh/Documents/reports-talk-etc/reports/paper/epj/UeffData/k_'.k.'.txt' u 1:7 ps 0.4 pt 7 notitle
+
+print "Ueff_middle_u3.tex"
+
+set term aqua 
+replot
+
+#------------------------------------------------------------------------
+#plot for [i=1:5] diff(0.1*i,x)   #works, too
+#k_arr = "0.05 0.1 0.2 0.3 0.4 0.5"
+#plot [0:0.5] for [k in k_arr] diff(k,x) ti '$k = '.k.'\,b$'   
+
+
+
+#plot for [i=1:4] diff2(x,-2*i) ti 'diff 2 u0 = '.(2*i).'kT'

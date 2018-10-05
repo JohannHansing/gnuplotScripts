@@ -1,0 +1,78 @@
+###### Electrostatic boxpotential at point (x,y,z) for range k and potstrength u0 in gnuplot format   ########
+### include into gnuplot via: load "gp_BoxpotentialEPJ.txt"
+
+load "/Users/jh/Documents/workspace-cpp/gnuplot/gp_defaultPlot.txt"
+
+# Helper function
+u(ri,rj,k,n,m)= exp(- sqrt( (ri - n)**2 + (rj - m)**2 ) / k)
+
+# Electrostatic potential calculated for rods up to order N = 1,2,3 ...
+U(x,y,z,k,u0,N)= u0 * sum[n=(1-N):N] ( sum[m=(1-N):N] ( u(x,y,k,n,m) + u(y,z,k,n,m) + u(z,x,k,n,m) ))
+
+
+N=2
+diff(k,u0)=U(0,0.5,0.5,k,u0,N) - U(0.5,0.5,0.5,k,u0,N)
+
+diff2(k,u0)=U(0,0,0.5,k,u0,N) - U(0,0,0,k,u0,N)
+
+
+
+#########################################################
+### Effective potential vs. Edge and Middle #############
+#########################################################
+
+
+set terminal epslatex color solid size 3.7, 2 font " " 12 lw 1.5
+set size ratio 0.6
+set style data points
+set ylabel '$U\;/\;\kT$' offset 1   #'$U^\mathrm{i}\;/\;\kT$' offset 1
+set xlabel '$x/b$'
+
+k_plot = "0.3"
+# Set colors for lines
+colors = "#FF0000 #0000FF #32CD32 #FF0000 #0000FF #32CD32"
+set for [i=1:6] linetype i lc rgb word(colors, i)
+
+
+##########
+#ATTRACTIVE:
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Ueff_edge_u-5k".k_plot."EPJ.tex"
+set key bottom vertical 
+set autoscale
+set xrange [0:1]
+
+cd '/Users/jh/Documents/mathematica/Boxpotential_data/Ueff_Ana_Num'
+
+plot 'U_u-5_k'.k_plot.'.dat' w linespoints ps 0.4 pt 7 lw 1.5  ti '$U^\mathrm{i}(x,0,0)$', \
+'UeffNum_u-5_k'.k_plot.'.dat' w linespoints ps 0.4 pt 7 lw 1.5 ti '$U_\mathrm{eff}(x)$'
+
+print "Ueff_edge_u-5k".k_plot."EPJ.tex"
+
+
+
+##########
+#REPULSIVE:
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Ueff_middle_u5k".k_plot."EPJ.tex"
+set key top vertical 
+set autoscale
+set xrange [0:1]
+
+plot 'U_u5_k'.k_plot.'.dat' w linespoints ps 0.4 pt 7 lw 1.5 ti '$U^\mathrm{i}(x,0.5b,0.5b)$', \
+'UeffNum_u5_k'.k_plot.'.dat' w linespoints ps 0.4 pt 7 lw 1.5 ti '$U_\mathrm{eff}(x)$', \
+'UeffAna_u5_k'.k_plot.'.dat' w linespoints ps 0.4 pt 7 lw 1.5 ti '$U_+(x)$'
+
+print "Ueff_middle_u5k".k_plot."EPJ.tex"
+
+set term aqua 
+replot
+
+#------------------------------------------------------------------------
+#plot for [i=1:5] diff(0.1*i,x)   #works, too
+#k_arr = "0.05 0.1 0.2 0.3 0.4 0.5"
+#plot [0:0.5] for [k in k_arr] diff(k,x) ti '$k = '.k.'\,b$'   
+
+
+
+#plot for [i=1:4] diff2(x,-2*i) ti 'diff 2 u0 = '.(2*i).'kT'

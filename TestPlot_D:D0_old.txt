@@ -1,0 +1,19 @@
+#
+#To be executed in '.../InstantValues' directory!!
+#
+#
+set   autoscale                        # scale axes automatically
+unset log                              # remove any log-scaling
+unset label                            # remove any previous labels
+set xtic auto                          # set xtics automatically
+set ytic auto                          # set ytics automatically
+set xlabel "time"
+set ylabel "D/D_0"
+set pointsize 0.5
+
+
+#plotting D/D0 ********************************************
+
+plot \
+'squaredisp.dat' u 1:($2/(6*$1)):($3/(6*$1)) w yerrorbars
+#'squaredisp.dat' u 1:2:3 w yerrorbars

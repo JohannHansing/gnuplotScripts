@@ -1,0 +1,22 @@
+##### Epot Plot for Thesis ########
+load "/Users/jh/Documents/workspace-cpp/gnuplot/gp_defaultPlot.txt"
+
+
+
+set ylabel '$\langle E_\text{pot} \rangle /\kT $' offset graph 0.03,0
+set xlabel '$t$'
+set xrange [0:200]
+set yrange [-11.2:2]
+set key top horiz width  -7
+
+
+plot \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/sim_data/noreset/dt0.0001/t200/d0/b10/p0/k1.000/u-5/InstantValues/Upot.dat' w yerrorbars ti '$U_0 = -5 \,k_B T$', \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/sim_data/noreset/dt0.0001/t200/d0/b10/p0/k1.000/u-1/InstantValues/Upot.dat' w yerrorbars ti '$U_0 = -1 \,k_B T$', \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/sim_data/noreset/dt0.0001/t200/d0/b10/p0/k1.000/u5/InstantValues/Upot.dat' w yerrorbars ti '$U_0 = 5 \, k_B T$'
+ 
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Epot_Plot_thesis.tex"
+replot
+
+set term aqua
+replot

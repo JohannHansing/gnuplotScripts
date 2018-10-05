@@ -1,0 +1,61 @@
+# First need to run:
+# sh plot_D_over_k_vary_U_epstex.sh 0 0 off -10 -5 -1 1 5 10 20 
+
+set autoscale; unset log; unset label; set ytic auto; set xtic auto
+set key top right horiz width -6
+set ylabel "$D/D_0$"
+set xlabel "$b / k$"
+#set xrange [-21:21]
+set yrange [0.0:1.3]
+
+
+# TICS
+set mxtics             # activate minor xtics
+set mytics             # activate minor ytics
+set xtics scale 1.1, 0.6 
+set ytics scale 1.1, 0.6
+
+
+set border linewidth 1.5
+
+set style data linespoints
+set pointintervalbox 1
+
+set style line 1 lw 2 pi -1 ps 1.5
+set tmargin at screen 0.98
+set terminal epslatex color solid size 5.4, 3.1 font " " 10 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+set key top right horiz width -2
+set terminal epslatex color solid size 6, 3.75 font " " 10 lw 1.5
+plot \
+"tmp/plotdata_3.txt" u (1/$1):($2/6):($3/6) ls 1 pt 1 lc rgb '#FF0000' ti "$U_0/k_B T = -10$", \
+"tmp/plotdata_4.txt" u (1/$1):($2/6):($3/6) ls 1 pt 2 lc rgb '#0000FF' ti "$U_0/k_B T = -5$", \
+"tmp/plotdata_5.txt" u (1/$1):($2/6):($3/6) ls 1 pt 3 lc rgb '#32CD32' ti "$U_0/k_B T = -1$", \
+"tmp/plotdata_6.txt" u (1/$1):($2/6):($3/6) ls 1 pt 4 lc rgb '#9400D3' ti "$U_0/k_B T = 1$", \
+"tmp/plotdata_7.txt" u (1/$1):($2/6):($3/6) ls 1 pt 5 lc rgb '#DAA520' ti "$U_0/k_B T = 5$", \
+"tmp/plotdata_8.txt" u (1/$1):($2/6):($3/6) ls 1 pt 6 lc rgb '#00CED1' ti "$U_0/k_B T = 10$", \
+"tmp/plotdata_9.txt" u (1/$1):($2/6):($3/6) ls 1 pt 7 lc rgb '#FF00FF' ti "$U_0/k_B T = 20$", \
+ 
+set xrange [0:0.06]
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_b_at_d0_t200_U_-10_-5_-1_1_5_10_20.tex'
+replot
+
+
+###### Plot D over C_polymer
+
+set xlabel '$C_\text{polymer}$
+plot \
+"tmp/plotdata_3.txt" u ($1**2):($2/6):($3/6) ls 1 pt 1 lc rgb '#FF0000' ti "$U_0/k_B T = -10$", \
+"tmp/plotdata_4.txt" u ($1**2):($2/6):($3/6) ls 1 pt 2 lc rgb '#0000FF' ti "$U_0/k_B T = -5$", \
+"tmp/plotdata_5.txt" u ($1**2):($2/6):($3/6) ls 1 pt 3 lc rgb '#32CD32' ti "$U_0/k_B T = -1$", \
+"tmp/plotdata_6.txt" u ($1**2):($2/6):($3/6) ls 1 pt 4 lc rgb '#9400D3' ti "$U_0/k_B T = 1$", \
+"tmp/plotdata_7.txt" u ($1**2):($2/6):($3/6) ls 1 pt 5 lc rgb '#DAA520' ti "$U_0/k_B T = 5$", \
+"tmp/plotdata_8.txt" u ($1**2):($2/6):($3/6) ls 1 pt 6 lc rgb '#00CED1' ti "$U_0/k_B T = 10$", \
+"tmp/plotdata_9.txt" u ($1**2):($2/6):($3/6) ls 1 pt 7 lc rgb '#FF00FF' ti "$U_0/k_B T = 20$", \
+ 
+
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_Cpoly_at_d0_t200_U_-10_-5_-1_1_5_10_20.tex'
+replot
+
+## First need to run:
+## sh plot_D_over_k_vary_U_epstex.sh 0 200 off -10 -5 -1 1 5 10 20 

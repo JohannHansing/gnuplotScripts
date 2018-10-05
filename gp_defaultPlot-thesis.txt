@@ -1,0 +1,27 @@
+set autoscale; unset log; unset label; set ytic auto; set xtic auto; set key default
+set key top right horiz width -6
+set ylabel "$D/D_0$" offset 1.5
+set xlabel "$XLABEL TODO$"
+set xrange [-21:21]
+set yrange [-0.01:1.3]
+
+
+# TICS
+set mxtics             # activate minor xtics
+set mytics             # activate minor ytics
+set xtics scale 1.1, 0.6 
+set ytics scale 1.1, 0.6
+
+
+set border linewidth 1.5
+
+set style data linespoints
+set pointintervalbox 1
+
+#do for [i=1:n] {
+#    set style line i linewidth 3
+#}
+set style line 1 lw 2 pi -1 ps 1.5
+set tmargin at screen 0.99
+set terminal epslatex color solid size 5.3, 2.8 font " " 12 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'

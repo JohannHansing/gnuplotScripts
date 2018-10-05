@@ -1,0 +1,42 @@
+##### truncated Lennard-Jones for Scientific Specialization Presentation #####
+set autoscale; unset log; unset label; set ytic auto; set xtic auto; unset key
+set ylabel '$U_{LJ}(x)$' offset graph 0.07,0.42 
+set xlabel '$x$' offset graph 0.5,0.14
+#set ylabel '$ \langle \Delta \tilde{r}^2(t^*) \rangle $'
+set xrange [0:2.5]
+set yrange [0:3.3]
+
+
+# TICS
+#set mxtics             # activate minor xtics
+#set mytics             # activate minor ytics
+set xtics scale 1.1, 0.6 format " "
+set ytics scale 1.1, 0.6 format " "
+set xtics ('0' 0, '$r_p \;$' 1, '$\quad \rho_c$' 1.12246)
+set ytics ('$\epsilon$' 1, '0' 0)
+
+set border linewidth 1.5
+
+set style data linespoints
+set pointintervalbox 1
+
+# make x axis an arrow
+set arrow from graph 0.94,0 to graph 0.99,0 size screen 0.03,16,60 filled lw 1.5
+# make y axis an arrow
+set arrow from graph 0,0.86 to graph 0,0.99 size screen 0.03,16,60 filled lw 1.5
+
+####### function
+U_LJ(x) = 4*( (1/x)**12 - (1/x)**6 + 1/4 ) 
+U_LJ(x) = 4*( (1/x)**12 - (1/x)**6 ) + 1
+
+set style line 1 lw 2 pi -1 ps 1.5
+set tmargin at screen 0.98
+set terminal epslatex color size 3, 2 font " " 14 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+#set key top horizontal width -7
+
+plot \
+U_LJ(x) lw 2, 1 lt 2 lw 1.5 lc rgb '#000000'
+ 
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/LJ_for_Presentation.tex"
+replot

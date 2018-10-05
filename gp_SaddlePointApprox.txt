@@ -1,0 +1,28 @@
+# step(x) = x>a ? 1 : 0
+
+
+
+# Load poxpotential U(x,y,z,k,u0,N)
+load "gp_Boxpotential.txt" 
+
+# Function for taken from Mathematica script SaddlePoint.nb
+# uyy0 is double derivative of U(r) in the center of the box
+uyy0( u0, k ) = 4 * u0 * exp(-0.707107/k) * (0.5/k**2 - 0.707107/k)
+
+DD0rep( u0, k ) = 0.5 * uyy0( u0, k ) / (pi * erf(sqrt(uyy0( u0, k)) / 2) *  erfi(sqrt(uyy0( U0, k )) / 2))
+
+
+DD0att( u0, k ) = u0 / (k**2 * pi * 
+    (erf(sqrt(u0)) + 
+     erf((0.5/k - 1) * sqrt(u0))) 
+     * 
+     (erfi(sqrt(u0)) + 
+     erfi((0.5/k - 1) * sqrt(u0))))
+
+
+# combined attractive and repulsive case
+DD0( u0, k ) = u0 > 0 ? DD0rep( u0, k ) : DD0att( u0, k )
+
+# working example: f(x,y) = x>0 ? sin(x*y) : cos(x/y)
+
+# TODO Include comparison of shape of effective potential

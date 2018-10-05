@@ -1,0 +1,16 @@
+#function definitions for fit
+f(x) = a*x + b
+
+# starting value
+a = 0.0001
+
+
+#fitting
+set fit errorvariables
+fit f(x) 'Upot.dat' u 1:2:3     via a, b
+set print "average_Epot.txt"
+print "m ", a, a_err
+print "b ", b, b_err
+#print "R^2",  
+set print
+

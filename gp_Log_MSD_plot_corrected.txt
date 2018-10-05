@@ -1,0 +1,72 @@
+##### MSD Plot for EPJE ######
+set autoscale; unset log; unset label; set ytic auto; set xtic auto
+set ylabel '$ \langle \Delta r^2(t) \rangle\; /\; b^2 $' offset graph 0.04,0
+set xlabel "$t D_0 / b^2$" offset graph 0,0.03
+set format x "$10^{%L}$"
+#set yrange [0.0:1.3]
+#set ytics 10
+
+
+# TICS
+#set mxtics             # activate minor xtics
+#set mytics             # activate minor ytics
+#set xtics scale 1.1, 0.6 
+#set ytics scale 1.1, 0.6
+
+
+set border linewidth 1.5
+
+set style data lines
+set pointintervalbox 1
+
+set style line 1 lw 2 pi -1 ps 1.5
+#set terminal epslatex color solid size 5.3, 3.2 font " " 13 lw 1.5
+#set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+set key bottom right horiz width  -3
+
+#set term pngcairo
+#set output 'MSD_Plot_EPJE.png'
+set terminal epslatex color solid size 5.3, 2.8 font " " 13 lw 1.5
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/MSD_Plot_EPJE_corrected.tex'
+
+set multiplot
+# === large plot ===
+set format y "$10^{%L}$"
+set logscale xy
+set xrange [0.001:200]
+set origin 0,0 
+set size 1,1
+plot \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/Release/sim_data/noreset/dt0.0005/t200/d0/b10/p0/k1.000/u-5/InstantValues/squaredisp.dat' u 1:($2/100):($3/100) lw 1.5 ti '$U_0 = -5 \,k_B T$', \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/Release/sim_data/noreset/dt0.0005/t200/d0/b10/p0/k1.000/u-1/InstantValues/squaredisp.dat' u 1:($2/100):($3/100) lw 1.5 ti  '$U_0 = -1 \,k_B T$', \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/Release/sim_data/noreset/dt0.0005/t200/d0/b10/p0/k1.000/u5/InstantValues/squaredisp.dat' u 1:($2/100):($3/100) lw 1.5 ti '$U_0 = 5 \, k_B T$', \
+'/Users/jh/Documents/workspace-cpp/SingleParticleSimulation/Release/sim_data/noreset/dt0.0005/t200/d0/b10/p0/k1.000/u0/InstantValues/squaredisp.dat' u 1:($2/100):($3/100) lc rgb 'black' dashtype 2 lw 1.5 ti 'free diffusion'
+
+#plot 'EPJE/u-5/InstantValues/squaredisp.dat' lw 1.5 ti '$U_0 = -5 \,k_B T$',\
+#'EPJE/u5/InstantValues/squaredisp.dat' lw 1.5 ti '$U_0 = 5 \,k_B T$',\
+#'EPJE/u1/InstantValues/squaredisp.dat' lw 1.5 ti '$U_0 = 1 \,k_B T$'
+
+# === small plot ===
+set size 0.4,0.52
+set origin 0.125,0.44
+unset logscale y
+set format y 
+#set ytics (0,0.5,1)
+set logscale x
+set xrange [0.001:210]
+set yrange [0.2:1.3]
+set ylabel '$\alpha$' offset graph 0.15,0
+set xlabel offset graph 0,0.06
+set xtics (" " 0.001,0.01," " 0.1,1," " 10,100)
+unset key
+#set tics scale 0.5 front
+#set xtics 10 offset 0,0.5
+#set ytics 0.1 offset 0.5,0
+plot '~/Documents/iPythonNB/HIforBD/alpha_u5.txt' w points pt 7 ps 0.6 ,\
+'~/Documents/iPythonNB/HIforBD/alpha_u5.txt' w points pt 7 ps 0.6 ,\
+'~/Documents/iPythonNB/HIforBD/alpha_u5.txt' w points pt 7 ps 0.6 
+
+unset multiplot
+
+set output "/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/MSD_Plot_EPJE_corrected.tex"
+replot

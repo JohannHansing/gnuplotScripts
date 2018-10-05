@@ -1,0 +1,71 @@
+# gnuplot function to create a cube
+# 
+# Usage: cube(x,y,z,c)
+cube(x,y,z,c) = sprintf('<echo "\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i\n\
+%f %f %f %i"',\
+0+x,0+y,0+z,c,\
+0+x,0+y,1+z,c,\
+0+x,1+y,1+z,c,\
+0+x,1+y,0+z,c,\
+0+x,0+y,0+z,c,\
+1+x,0+y,0+z,c,\
+1+x,0+y,1+z,c,\
+1+x,1+y,1+z,c,\
+1+x,1+y,0+z,c,\
+1+x,0+y,0+z,c,\
+0+x,0+y,0+z,c,\
+1+x,0+y,0+z,c,\
+1+x,1+y,0+z,c,\
+0+x,1+y,0+z,c,\
+0+x,0+y,0+z,c,\
+0+x,0+y,1+z,c,\
+1+x,0+y,1+z,c,\
+1+x,1+y,1+z,c,\
+0+x,1+y,1+z,c,\
+0+x,0+y,1+z,c\
+)
+
+set terminal aqua size 500,500
+set style line 1 lc rgb 'black' lt 1 lw 2.5
+set style line 2 lc rgb 'blue' lt 1 lw 1.5
+unset tics; set border 0; unset key
+set ztics ('$0 \, b$' 0, '$0.5 \, b$' 0.5,'$1 \, b$' 1)
+set ztics out
+set isosamples 30
+set view 70,345
+
+#00x z=0.5
+set terminal epslatex color size 2.4,2.4
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Contour/00xCubePlanez05.tex'
+splot cube(0,0,0,1) w l ls 1, 0.5 w l ls 2
+
+#00x z=0
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Contour/00xCubePlanez00.tex'
+splot cube(0,0,0,1) w l ls 1, 0.0 w l ls 2
+
+#110
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/Contour/110CubePlane.tex'
+set isosamples 35, 25
+splot cube(0,0,0,1) w l ls 1, x w l ls 2

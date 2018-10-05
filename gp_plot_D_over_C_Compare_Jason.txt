@@ -1,0 +1,94 @@
+# maybe make this a script!
+load "/Users/jh/Documents/workspace-cpp/gnuplot/gp_defaultPlot.txt"
+set terminal epslatex color solid size 5.3, 3.2 font " " 12 lw 1
+
+set autoscale; unset log; unset label; set ytic auto; set xtic auto
+set key  bottom right vertical width -6
+set ylabel "$D/D_0$"
+set xlabel "$C_\\text{Ion}$ / mM"
+set xrange [0:225]
+
+
+# TICS
+set mytics             # activate minor ytics
+set mxtics
+set ytics scale 1.1, 0.6
+set xtics 0, 25, 225
+set yrange [0:1.15]
+
+
+set border linewidth 1.5
+
+set style data linespoints
+set pointintervalbox 1
+
+set style line 1 lw 1 pi -1 ps 1.5
+set tmargin at screen 0.98
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/tmp/tmp_output.tex'
+
+
+
+
+####  REMARK ###
+# I calculated the value 0f 0.71 from the Alexa488 dextran data in our biophys paper
+# D = 306 um/s2 corresponds to D/DU = 1, hence, since for Alexa D_water = 430 um/s2,
+# D/D0 = 0.71 .
+################
+
+plot "/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-DDo2-w-error.txt" u  ($1+20):($4):($5) w errorbars pt 5 lc rgb 'red' ps 1.5 ti "Dextran (+)" , \
+"/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-DDo2-w-error.txt" u  ($1+16):($2):($3) w errorbars pt 13 lc rgb 'blue' ps 1.5 ti "Dextran (-)" , \
+"tmp/plotdata_5.txt" u (0.0924*10**3/(($1*23)**2)):($2/6):($3/6) with linespoints ps 1.8 lc rgb "#FF00FF" lt 1 pt 1 lw 2 ti "$U_0/k_B T = -8$",\
+"tmp/plotdata_6.txt" u (0.0924*10**3/(($1*23)**2)):($2/6):($3/6) with linespoints ps 1.8 lc rgb "#00FFFF" lt 1 pt 2 lw 2 ti "$U_0/k_B T = 5$ "
+
+#"tmp/plotdata_7.txt" u (0.0924*10**3/($1*23)**2):($2/6):($3/6) ti "$U_0/k_B T = -7$ " , \
+#"tmp/plotdata_8.txt" u (0.0924*10**3/($1*23)**2):($2/6):($3/6) ti "$U_0/k_B T = -6$ " 
+
+# "/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_neutralDextran.txt" u  ($1+10):($2/430) w points pt 11 lc rgb 'green' ps 1.5 ti "Dextran (N)" , \
+
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_C_at_LJ_d0_Comparison_Jason-D0New.tex'
+replot
+
+
+set term aqua
+replot
+
+
+#################################################################
+
+
+set terminal epslatex color solid size 5.3, 3.2 font " " 12 lw 1
+set ylabel "$D/D_\\text{neut}$"
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_C_at_LJ_d0_Comparison_Jason-DUTEST.tex'
+
+
+plot "/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-w-error.txt" u  ($1+20):($4):($5) w errorbars pt 5 lc rgb 'red' ps 1.5 ti "Dextran (+)" , \
+"/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-w-error.txt" u  ($1+16):($2):($3) w errorbars pt 13 lc rgb 'blue' ps 1.5 ti "Dextran (-)" , \
+"tmp/plotdata_5.txt" u (0.0924*10**3/(($1*23)**2)):($2/5.92):($3/6) with linespoints ps 1.8 lc rgb "#FF00FF" lt 1 pt 1 lw 2 ti "$U_0/k_B T = -8$",\
+"tmp/plotdata_6.txt" u (0.0924*10**3/(($1*23)**2)):($2/5.92):($3/6) with linespoints ps 1.8 lc rgb "#00FFFF" lt 1 pt 2 lw 2 ti "$U_0/k_B T = 5$ "
+
+# "/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_neutralDextran.txt" u  ($1+10):($2/300) w points pt 11 lc rgb 'green' ps 1.5 ti "Dextran (N)" , \
+
+
+#################################################################
+set terminal epslatex color  dashed dashlength 3 size 5.3, 3.2 font " " 12 lw 1.5
+print "SET TERM ... DASHED does not work anymore!!! intead use 'dashtype 2' in plot command!!!
+set ylabel "$D/D_0$"
+set output '/Users/jh/Documents/workspace-cpp/gnuplot/figures/epslatex/D_over_C_at_LJ_d0_Comparison_Jason-EPJ.tex'
+
+set style line 1 lc rgb "red" pt 1 ps 2 lt 2
+set style line 2 lc rgb "blue" pt 2 ps 2 lt 3
+
+plot "/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-w-error.txt" u  ($1+20):($4*0.7):($5*0.7) w errorbars pt 5 lc rgb 'red' ps 1.5 ti "Dextran (+)" , \
+"/Users/jh/Documents/reports-talk-etc/reports/paper/jason/jason_data-w-error.txt" u  ($1+16):($2*0.7):($3*0.7) w errorbars pt 13 lc rgb 'blue' ps 1.5 ti "Dextran (-)" , \
+"tmp/plotdata_5.txt" u (0.0924*10**3/(($1*23)**2)):($2/6):($3/6) with linespoints ps 1.8 lc rgb "#FF00FF" lt 1 pt 1 lw 2 dashtype 2 ti "$U_0/k_B T = -8$",\
+"tmp/plotdata_6.txt" u (0.0924*10**3/(($1*23)**2)):($2/6):($3/6) with linespoints ps 1.8 lc rgb "#00FFFF" lt 1 pt 2 lw 2 dashtype 2 ti "$U_0/k_B T = 5$ ", \
+"tmp/plotdata_5.txt" u (0.0924*10**3/(($1*23)**2)):(0.71*$2/6):($3/6) with linespoints ps 1 lc rgb "#FF00FF" lt 4 pt 1 lw 2 ti "",\
+"tmp/plotdata_6.txt" u (0.0924*10**3/(($1*23)**2)):(0.71*$2/6):($3/6) with linespoints ps 1 lc rgb "#00FFFF" lt 4 pt 2 lw 2 ti ""
+
+#plot "/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_posDextran.txt" u  ($1+10):($2/430) w points pt 5 ps 2 ti "DEAE Dextran (+)" , \
+#"/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_neutralDextran.txt" u  ($1+10):($2/430) w points pt 11 ps 2 ti "Dextran (N)" , \
+#"/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_negDextran.txt" u  ($1+10):($2/430) w points pt 13 ps 2 ti "CM Dextran (-)" , \
+
+#"/Users/jh/Documents/reports-talk-etc/reports/JasonDataAlexa488_neutralDextran.txt" u  ($1+10):($2/430) w points pt 11 ps 2 ti "Dextran (N)" , \
+
+## FIRST RUN: plot_D_over_C_vary_U_at_RT.sh 0 1 off 23 500 -8 5 ##
